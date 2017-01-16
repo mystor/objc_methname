@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate objcstuff;
+extern crate objc_methname;
 
 macro_rules! intern {
     ($id:ident) => {

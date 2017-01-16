@@ -4,7 +4,6 @@ extern crate syn;
 extern crate quote;
 
 use proc_macro::TokenStream;
-
 use syn::{Body, VariantData};
 
 #[proc_macro_derive(__objc_methname, attributes(value))]
@@ -23,23 +22,22 @@ pub fn derive_objc_methname(input: TokenStream) -> TokenStream {
         Body::Struct(VariantData::Struct(ref fields)) => {
             let mut result = Vec::new();
             for field in fields {
-                result.extend(field.clone().ident.unwrap().to_string().into_bytes());
+                result.extend(field.ident.as_ref().unwrap().as_ref().as_bytes());
                 result.push(b':');
             }
             result
         }
-        _ => panic!()
+        _ => panic!("Unexpected struct format as argument to derive(__objc_methname)")
     };
-
-    // let mut value = ast.ident.to_string().into_bytes();
     value.push(b'\0'); // Add the null to the end of the string
+
     let length = value.len();
     let name = &ast.ident;
     let result = quote!{
         impl #name {
             #[inline]
             fn get() -> *const u8 {
-                // Create a wrapper which 
+                #[repr(C)]
                 struct SendSyncWrap(*const [u8; #length]);
                 unsafe impl Send for SendSyncWrap {}
                 unsafe impl Sync for SendSyncWrap {}
