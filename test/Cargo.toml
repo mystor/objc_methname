@@ -1,0 +1,7 @@
+[package]
+name = "objc_methname_test"
+version = "0.1.0"
+authors = ["Michael Layzell <michael@thelayzells.com>"]
+
+[dependencies]
+objc_methname = { path = ".." }

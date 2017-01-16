@@ -1,0 +1,12 @@
+[package]
+name = "objc_methname"
+version = "0.1.0"
+authors = ["Michael Layzell <michael@thelayzells.com>"]
+
+[lib]
+name = "objc_methname"
+proc-macro = true
+
+[dependencies]
+syn = "0.9"
+quote = "0.3"
